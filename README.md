@@ -5,8 +5,7 @@ A pretty simple URL shortener written in Golang
 ## Getting Started
 
     createdb shorty
-    sql-migrate up
-    go mod tidy
+    make migrate
 
 ## Assumptions
 
@@ -24,6 +23,6 @@ A pretty simple URL shortener written in Golang
 
     make
 
-## Running It (exposed on port 5000 by default)
+## Running It (exposed on port 4100 by default)
 
     make run
