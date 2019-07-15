@@ -1,7 +1,6 @@
 package endpoints
 
 import (
-	"fmt"
 	"net/http"
 	"shorty/accessors"
 
@@ -25,16 +24,17 @@ func (e *Endpointer) RedirectURL(c *gin.Context) {
 		u := accessors.URLDataAccessor{Databaser: e.databaser}
 		originalURL, uErr := u.GetURLBySlug(slug)
 		if uErr != nil {
+			if uErr.Error() == "upper: no more rows in this result set" {
+				NotFound("Shortened URL not found", c)
+				return
+			}
 			Error(uErr.Error(), c)
 			return
 		}
 
-		fmt.Println(originalURL)
-
 		c.Redirect(http.StatusMovedPermanently, originalURL.URL)
 		c.Abort()
 	} else {
-		validationErr := HandleError(err)
-		ValidationError(validationErr, c)
+		HandleError(err, c)
 	}
 }

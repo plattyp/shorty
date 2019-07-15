@@ -15,7 +15,7 @@ import (
 
 // OriginURL is for binding to the URL request
 type OriginURL struct {
-	URL string `json:"url" binding:"required"`
+	URL string `json:"url" binding:"required,url"`
 }
 
 // ShortenedURLResponse is for return to the URL request
@@ -56,14 +56,18 @@ func (e *Endpointer) NewShortenedURL(c *gin.Context) {
 			response,
 		)
 	} else {
-		validationErr := HandleError(err)
-		ValidationError(validationErr, c)
+		HandleError(err, c)
 	}
 }
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
 
 func randomGeneratedSlug(n int) string {
+	// This will be used to make testing easier
+	if os.Getenv("STATIC_RANDOM_SLUG") != "" {
+		return os.Getenv("STATIC_RANDOM_SLUG")
+	}
+
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]

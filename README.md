@@ -38,6 +38,10 @@ A pretty simple URL shortener written in Golang
 
     make run
 
+### Initializing Test Environment
+
+    make init_test
+
 ### Testing It
 
     make test

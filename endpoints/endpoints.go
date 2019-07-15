@@ -15,20 +15,9 @@ type Endpointer struct {
 	databaser *db.Databaser
 }
 
-// FieldError allows us to return structured errors to the webhook response
-type FieldError struct {
-	Field   string `json:"field"`
-	Message string `json:"message"`
-}
-
 // NewEndpointer returns a new endpointer to be used
 func NewEndpointer(d *db.Databaser) *Endpointer {
 	return &Endpointer{databaser: d}
-}
-
-// PrintMessage returns back the structured message
-func (f FieldError) PrintMessage() string {
-	return "[" + f.Field + "] " + f.Message
 }
 
 // Success returns generic success message
@@ -64,34 +53,31 @@ func Error(e string, c *gin.Context) {
 	)
 }
 
-// ValidationError returns a validation error message
-func ValidationError(f FieldError, c *gin.Context) {
+// NotFound returns generic error message
+func NotFound(e string, c *gin.Context) {
 	c.JSON(
-		http.StatusBadRequest,
+		http.StatusNotFound,
 		gin.H{
 			"status":  false,
-			"message": f.PrintMessage(),
+			"message": e,
 		},
 	)
 }
 
 // HandleError formats binding errors to a single FieldError
-func HandleError(err error) FieldError {
-	var error FieldError
+func HandleError(err error, c *gin.Context) {
 	errs, ok := err.(validator.ValidationErrors)
 	if ok {
 		for _, valErr := range errs {
-			error = FieldError{
-				Field:   valErr.FieldNamespace,
-				Message: fmt.Sprintf("Validation error due to the following tag '%s'", valErr.Tag),
+			if valErr.Tag == "required" {
+				Error(fmt.Sprintf("You are missing a required field: %s", valErr.Field), c)
+			} else if valErr.Tag == "url" {
+				Error(fmt.Sprintf("You are passing an invalid value for field: %s", valErr.Field), c)
+			} else {
+				Error(fmt.Sprintf("Validation error due to the following tag '%s': %s", valErr.Tag, valErr.Field), c)
 			}
 		}
 	} else {
-		error = FieldError{
-			Field:   "Generic",
-			Message: err.Error(),
-		}
+		Error(err.Error(), c)
 	}
-
-	return error
 }

@@ -10,7 +10,7 @@ build:
 	$(GOBUILD) -i -o bin/shorty main.go
 
 install:
-	createdb shorty-test
+	createdb shorty
 	sql-migrate up
 
 run:
@@ -20,8 +20,10 @@ run:
 migrate:
 	sql-migrate up
 
-test:
+init-test:
 	dropdb shorty-test --if-exists
 	createdb shorty-test
 	sql-migrate up --env test
+
+test:
 	go test
