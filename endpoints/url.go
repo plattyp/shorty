@@ -25,6 +25,7 @@ type ShortenedURLResponse struct {
 	ShortenedURL string `json:"shortened_url"`
 }
 
+// ErrUnableToGenerateUniqueSlug used to explain that it was unable to generate a unique slug
 var ErrUnableToGenerateUniqueSlug = errors.New("Unable to generate a unique slug")
 
 const slugGeneratedLength = 20
