@@ -11,6 +11,9 @@ import (
 	"testing"
 	"time"
 
+	"shorty/accessors"
+	"shorty/db"
+
 	"github.com/stretchr/testify/suite"
 )
 
@@ -36,6 +39,24 @@ func performGETRequest(r http.Handler, path string) *httptest.ResponseRecorder {
 	return w
 }
 
+func createShortenedURL(url string) (string, error) {
+	randomSlug := getRandomString()
+
+	dbConn, err := db.NewDatabaser(os.Getenv("DATABASE_URL"))
+	if err != nil {
+		return "", err
+	}
+	defer dbConn.Close()
+
+	u := accessors.URLDataAccessor{Databaser: dbConn}
+	createdURL, err := u.CreateURL(url, randomSlug)
+	if err != nil {
+		return "", err
+	}
+
+	return createdURL.Slug, nil
+}
+
 func (suite *MainTestSuite) SetupTest() {
 	os.Setenv("DATABASE_URL", "postgres://localhost:5432/shorty-test")
 }
@@ -46,14 +67,12 @@ func (suite *MainTestSuite) TestIndexReturnsStandardResult() {
 
 	// Perform a GET request with that handler.
 	w := performGETRequest(router, "/")
-
-	//assert.Equal(suite.T(), http.StatusOK, w.Code)
 	suite.Equal(http.StatusOK, w.Code)
 
 	// Convert the JSON response to a map
 	var response map[string]interface{}
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
-	if !suite.Nil(err) {
+	if !suite.NoError(err) {
 		return
 	}
 
@@ -120,7 +139,7 @@ func (suite *MainTestSuite) TestPOSTShortenWithValidCredentialsReturns201AndSave
 	// Convert the JSON response to a map
 	var response map[string]interface{}
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
-	if !suite.Nil(err) {
+	if !suite.NoError(err) {
 		return
 	}
 
@@ -153,7 +172,7 @@ func (suite *MainTestSuite) TestPOSTShortenReturns400IfNoURLIsProvided() {
 	// Convert the JSON response to a map
 	var response map[string]interface{}
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
-	if !suite.Nil(err) {
+	if !suite.NoError(err) {
 		return
 	}
 
@@ -185,7 +204,7 @@ func (suite *MainTestSuite) TestPOSTShortenReturns400IfInvalidURLIsProvided() {
 	// Convert the JSON response to a map
 	var response map[string]interface{}
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
-	if !suite.Nil(err) {
+	if !suite.NoError(err) {
 		return
 	}
 
@@ -198,14 +217,12 @@ func (suite *MainTestSuite) TestPOSTShortenReturns400IfInvalidURLIsProvided() {
 	suite.Equal("You are passing an invalid value for field: URL", messageValue)
 }
 
-func (suite *MainTestSuite) TestGetRedirectReturns404IfNoSlugCorresponds() {
+func (suite *MainTestSuite) TestGETRedirectReturns404IfNoSlugCorresponds() {
 	// Grab our router
 	router := SetupRouter()
 
 	// Perform a GET request with that handler.
 	w := performGETRequest(router, "/notrealslug")
-
-	//assert.Equal(suite.T(), http.StatusOK, w.Code)
 	suite.Equal(http.StatusNotFound, w.Code)
 
 	// Convert the JSON response to a map
@@ -222,6 +239,25 @@ func (suite *MainTestSuite) TestGetRedirectReturns404IfNoSlugCorresponds() {
 	// Make some assertions on the correctness of the response.
 	suite.Equal(false, statusValue)
 	suite.Equal("Shortened URL not found", messageValue)
+}
+
+func (suite *MainTestSuite) TestGETRedirectReturnsAPermanentRedirectToTargetURLIfExists() {
+	originalURL := "https://www.google.com"
+
+	slug, err := createShortenedURL(originalURL)
+	if !suite.NoError(err) {
+		return
+	}
+
+	// Grab our router
+	router := SetupRouter()
+
+	// Perform a GET request with that handler.
+	w := performGETRequest(router, "/"+slug)
+	suite.Equal(http.StatusMovedPermanently, w.Code)
+
+	location := w.Header().Get("location")
+	suite.Equal(originalURL, location)
 }
 
 func TestMainTestSuite(t *testing.T) {

@@ -20,7 +20,7 @@ func main() {
 
 // SetupRouter builds out all routes to run the main API
 func SetupRouter() *gin.Engine {
-	shortyEnv := os.Getenv("SHORTY_ENVIRONMENT")
+	shortyEnv := os.Getenv("SHORTY_ENV")
 
 	// Load from .env if development or travis
 	if shortyEnv == "" || shortyEnv == "development" || shortyEnv == "travis" {
