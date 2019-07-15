@@ -12,6 +12,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.1 // indirect
 	github.com/plattyp/addon v0.0.0-20181011005852-4f135db9ce68
 	github.com/rubenv/sql-migrate v0.0.0-20190618074426-f4d34eae5a5c // indirect
+	github.com/stretchr/testify v1.3.0
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	upper.io/db.v3 v3.5.7+incompatible

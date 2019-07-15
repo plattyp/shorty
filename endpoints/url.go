@@ -72,5 +72,5 @@ func randomGeneratedSlug(n int) string {
 }
 
 func constructShortURL(slug string) string {
-	return fmt.Sprintf("%s/r/%s", os.Getenv("SHORTY_HOST"), slug)
+	return fmt.Sprintf("%s/%s", os.Getenv("SHORTY_HOST"), slug)
 }

@@ -14,6 +14,12 @@ import (
 )
 
 func main() {
+	router := SetupRouter()
+	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
+}
+
+// SetupRouter builds out all routes to run the main API
+func SetupRouter() *gin.Engine {
 	shortyEnv := os.Getenv("SHORTY_ENVIRONMENT")
 
 	// Load from .env if development or travis
@@ -45,12 +51,12 @@ func main() {
 	authorized.POST("/shorten", e.NewShortenedURL)
 
 	// Redirect URL
-	router.GET("/r/:slug", e.RedirectURL)
+	router.GET("/:slug", e.RedirectURL)
 
 	// Generic 404
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"status": false, "message": "Endpoint not found"})
 	})
 
-	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
+	return router
 }

@@ -2,27 +2,72 @@
 
 A pretty simple URL shortener written in Golang
 
+## Dependencies
+
+    Golang 1.11 or greater
+    PostgreSQL 10 or greater
+
 ## Getting Started
 
-    createdb shorty
-    make migrate
+    # Will create the necessary database locally and run all migrations
+    make install
+
+    # Will build the Golang app for the first time and pull all dependent modules
+    make build
 
 ## Assumptions
 
   - Using a PostgreSQL database as a datastore (Install Postgres locally)
   - The ENVs in this are just used as an example, real world you'd probably use a vault or store them only on the deployed environment
 
-## Structure
+## Commands
 
-## Creating DB / Running Migrations & Seeds
+### Creating DB / Running Migrations & Seeds
 
-    createdb shorty
+    make install
+
+### If you add migrations, to execute them on your target DB
+
     make migrate
 
-## Building It
+### Building It
 
     make
 
-## Running It (exposed on port 4100 by default)
+### Running It (exposed on port 4100 by default)
 
     make run
+
+### Testing It
+
+    make test
+
+## Endpoints
+
+### GET /
+
+Used as a health check with no authentication required.
+
+### POST /api/shorten
+
+Accepts a single body parameter of `url`. This requires authorization using the `USERNAME` and `PASSWORD` environment variables. If successful, it'll return back information about the shortened URL to be able to use.
+
+Sample Request:
+```json
+{
+  "url": "https://www.google.com/"
+}
+```
+
+Sample Response:
+```json
+{
+  "id": 1,
+  "shortened_url": "http://localhost:4100/I4s1Wkk89tAOEzcXFjJ3"
+}
+```
+
+### GET /:slug
+
+Used for redirecting the shortened URL slug into the original destination URL.
+

@@ -8,7 +8,10 @@ CREATE TABLE public.urls (
 );
 
 CREATE UNIQUE INDEX "index_urls_unique_slug"
-ON "public"."urls" ("slug");
+	ON "public"."urls" ("slug");
+
+CREATE INDEX "index_urls_on_created_at"
+	ON "public"."urls" USING BRIN(created_at) WITH (pages_per_range = 10);
 
 -- +migrate Down
 DROP TABLE IF EXISTS public.urls;
