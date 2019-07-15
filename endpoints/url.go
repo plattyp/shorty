@@ -36,7 +36,6 @@ func (e *Endpointer) NewShortenedURL(c *gin.Context) {
 
 		// Create URL
 		u := accessors.URLDataAccessor{Databaser: e.databaser}
-		rand.Seed(time.Now().UnixNano())
 		randomSlug := randomGeneratedSlug(slugGeneratedLength)
 		createdURL, uErr := u.CreateURL(url, randomSlug)
 		if uErr != nil {
@@ -63,6 +62,8 @@ func (e *Endpointer) NewShortenedURL(c *gin.Context) {
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
 
 func randomGeneratedSlug(n int) string {
+	rand.Seed(time.Now().UnixNano())
+
 	// This will be used to make testing easier
 	if os.Getenv("STATIC_RANDOM_SLUG") != "" {
 		return os.Getenv("STATIC_RANDOM_SLUG")

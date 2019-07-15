@@ -10,7 +10,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/mitchellh/cli v1.0.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.1 // indirect
-	github.com/plattyp/addon v0.0.0-20181011005852-4f135db9ce68
 	github.com/rubenv/sql-migrate v0.0.0-20190618074426-f4d34eae5a5c // indirect
 	github.com/stretchr/testify v1.3.0
 	gopkg.in/go-playground/validator.v8 v8.18.2

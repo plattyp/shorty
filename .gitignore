@@ -1,0 +1,13 @@
+.DS_Store
+
+# Logs
+*.log
+
+bin/shorty
+bin/golint
+vendor
+.env
+c.out
+
+
+!.gitkeep
