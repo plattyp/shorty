@@ -15,6 +15,7 @@ type URLAccessor interface {
 	GetURL(id int64) (*resources.URL, error)
 	GetURLBySlug(slug string) (*resources.URL, error)
 	CreateURL(url string, slug string) (*resources.URL, error)
+	SlugExists(slug string) (bool, error)
 }
 
 const urlTableName = "urls"
@@ -69,6 +70,11 @@ func (u URLDataAccessor) GetURLBySlug(slug string) (*resources.URL, error) {
 	}
 
 	return &url, nil
+}
+
+// SlugExists retrieves a URL by its ID
+func (u URLDataAccessor) SlugExists(slug string) (bool, error) {
+	return u.urlsTable().Find(upper.Cond{"slug": slug}).Exists()
 }
 
 // usersTable returns back a collection

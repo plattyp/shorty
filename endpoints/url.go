@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -24,6 +25,8 @@ type ShortenedURLResponse struct {
 	ShortenedURL string `json:"shortened_url"`
 }
 
+var ErrUnableToGenerateUniqueSlug = errors.New("Unable to generate a unique slug")
+
 const slugGeneratedLength = 20
 
 // NewShortenedURL is for creating a new shortened URL
@@ -36,7 +39,12 @@ func (e *Endpointer) NewShortenedURL(c *gin.Context) {
 
 		// Create URL
 		u := accessors.URLDataAccessor{Databaser: e.databaser}
-		randomSlug := randomGeneratedSlug(slugGeneratedLength)
+		randomSlug, nErr := NewSlug(u, 10)
+		if nErr != nil {
+			Error(nErr.Error(), c)
+			return
+		}
+
 		createdURL, uErr := u.CreateURL(url, randomSlug)
 		if uErr != nil {
 			Error(uErr.Error(), c)
@@ -59,9 +67,28 @@ func (e *Endpointer) NewShortenedURL(c *gin.Context) {
 	}
 }
 
+// NewSlug returns a unique slug that currently is not used in the DB
+func NewSlug(u accessors.URLAccessor, maxRetries int) (string, error) {
+	for i := 0; i < maxRetries; i++ {
+		slug := RandomGeneratedSlug(slugGeneratedLength)
+
+		exists, err := u.SlugExists(slug)
+		if err != nil {
+			return "", err
+		}
+
+		if !exists {
+			return slug, nil
+		}
+	}
+
+	return "", ErrUnableToGenerateUniqueSlug
+}
+
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
 
-func randomGeneratedSlug(n int) string {
+// RandomGeneratedSlug returns a randomly made string of N characters
+func RandomGeneratedSlug(n int) string {
 	rand.Seed(time.Now().UnixNano())
 
 	// This will be used to make testing easier
