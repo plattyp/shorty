@@ -40,9 +40,9 @@ A pretty simple URL shortener written in Golang
 
 ### Initializing Test Environment
 
-    make init_test
+    make init-test
 
-### Testing It
+### Testing It (make sure to initialize prior to running tests)
 
     make test
 
