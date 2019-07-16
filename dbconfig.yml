@@ -9,3 +9,9 @@ test:
   datasource: dbname=shorty-test sslmode=disable
   dir: db/migrations
   table: schema_migrations
+
+travis:
+  dialect: postgres
+  datasource: dbname=travis sslmode=disable
+  dir: db/migrations
+  table: schema_migrations

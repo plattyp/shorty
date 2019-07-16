@@ -21,6 +21,6 @@ branches:
   only:
   - master
 before_script:
-  - make init-test
+  - make init-test-travis
 script:
   - make test

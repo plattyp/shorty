@@ -25,5 +25,8 @@ init-test:
 	createdb shorty-test
 	sql-migrate up --env test
 
+init-test-travis:
+	./sql-migrate up --env travis
+
 test:
 	go test
