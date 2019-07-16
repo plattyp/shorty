@@ -23,6 +23,7 @@ branches:
   only:
   - master
 before_script:
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
   - make init-test-travis
 script:
   - make test
