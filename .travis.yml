@@ -11,8 +11,10 @@ addons:
     - postgresql-client-10
 env:
   global:
+  - PGPORT=5433
   - GO111MODULE=on
   - TRAVIS=1
+  - DATABASE_URL=postgres://localhost:5433/shorty-test
 install:
   - make build
 branches:

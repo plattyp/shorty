@@ -58,6 +58,10 @@ func createShortenedURL(url string) (string, error) {
 }
 
 func (suite *MainTestSuite) SetupTest() {
+	if os.Getenv("TRAVIS") != "" {
+		return
+	}
+
 	os.Setenv("DATABASE_URL", "postgres://localhost:5432/shorty-test")
 }
 
