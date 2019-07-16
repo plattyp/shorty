@@ -11,6 +11,7 @@ addons:
     - postgresql-client-10
 env:
   global:
+  - GO111MODULE=on
   - TRAVIS=1
 install:
   - make build
@@ -21,4 +22,4 @@ before_script:
   - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
   - make init-test
 script:
-  - GO111MODULE=on make test
+  - make test
