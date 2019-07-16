@@ -17,6 +17,7 @@ env:
   - DATABASE_URL=postgres://localhost:5433/travis
 install:
   - go get -v github.com/rubenv/sql-migrate
+  - go get -v github.com/rubenv/sql-migrate/...
   - make build
 branches:
   only:
