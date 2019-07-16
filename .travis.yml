@@ -13,7 +13,7 @@ env:
   global:
   - TRAVIS=1
 install:
-  - make install
+  - make build
 branches:
   only:
   - master
