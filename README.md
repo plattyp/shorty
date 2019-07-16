@@ -4,7 +4,7 @@ A pretty simple URL shortener written in Golang
 
 ## Dependencies
 
-    Golang (1.11 or greater)
+    Golang (1.12 or greater)
     PostgreSQL (10 or greater)
 
 ## Getting Started

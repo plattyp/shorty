@@ -2,7 +2,7 @@ dist: trusty
 cache: false
 language: go
 sudo: true
-go: '1.11'
+go: '1.12'
 addons:
   postgresql: "10"
   apt:
