@@ -1,0 +1,24 @@
+dist: trusty
+cache: false
+language: go
+sudo: true
+go: '1.11'
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+  - TRAVIS=1
+install:
+  - make install
+branches:
+  only:
+  - master
+before_script:
+  - psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;' -U postgres
+  - make init-test
+script:
+  - GO111MODULE=on make test
