@@ -6,7 +6,6 @@
 bin/shorty
 bin/golint
 vendor
-.env
 c.out
 
 
