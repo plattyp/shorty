@@ -1,4 +1,4 @@
-# Shorty - Minimal Persisted URL Shortener
+# Shorty - Minimal Persisted URL Shortener [![Build Status](https://travis-ci.org/plattyp/shorty.svg?branch=master)](https://travis-ci.org/plattyp/shorty)
 
 A pretty simple URL shortener written in Golang
 
