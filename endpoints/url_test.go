@@ -16,6 +16,10 @@ type UrlTestSuite struct {
 }
 
 func (suite *UrlTestSuite) SetupTest() {
+	if os.Getenv("TRAVIS") != "" {
+		return
+	}
+
 	os.Setenv("DATABASE_URL", "postgres://localhost:5432/shorty-test")
 }
 

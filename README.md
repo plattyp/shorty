@@ -1,10 +1,10 @@
-# Shorty - Minimal Persisted URL Shortener
+# Shorty - Minimal Persisted URL Shortener [![Build Status](https://travis-ci.org/plattyp/shorty.svg?branch=master)](https://travis-ci.org/plattyp/shorty)
 
 A pretty simple URL shortener written in Golang
 
 ## Dependencies
 
-    Golang (1.11 or greater)
+    Golang (1.12 or greater)
     PostgreSQL (10 or greater)
 
 ## Getting Started

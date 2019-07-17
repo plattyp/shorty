@@ -12,6 +12,6 @@ test:
 
 travis:
   dialect: postgres
-  datasource: dbname=travis sslmode=disable
+  datasource: dbname=travis sslmode=disable port=5433
   dir: db/migrations
   table: schema_migrations
