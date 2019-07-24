@@ -29,7 +29,7 @@ type ShortenedURLResponse struct {
 // ErrUnableToGenerateUniqueSlug used to explain that it was unable to generate a unique slug
 var ErrUnableToGenerateUniqueSlug = errors.New("Unable to generate a unique slug")
 
-const slugGeneratedLength = getSlugLength()
+var slugGeneratedLength = getSlugLength()
 
 // NewShortenedURL is for creating a new shortened URL
 func (e *Endpointer) NewShortenedURL(c *gin.Context) {
