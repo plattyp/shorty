@@ -15,3 +15,9 @@ travis:
   datasource: dbname=travis sslmode=disable port=5433
   dir: db/migrations
   table: schema_migrations
+
+deployed:
+  dialect: postgres
+  datasource: $DATABASE_URL
+  dir: db/migrations
+  table: schema_migrations

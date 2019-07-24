@@ -17,10 +17,8 @@ env:
   - PGPORT=5433
   - GO111MODULE=on
   - TRAVIS=1
-  - DATABASE_URL=postgres://localhost:5433/travis
+  - DATABASE_URL=postgres://localhost:5433/shorty-test
 install:
-  - go get -v github.com/rubenv/sql-migrate
-  - go get -v github.com/rubenv/sql-migrate/...
   - make build
 branches:
   only:
