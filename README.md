@@ -15,10 +15,18 @@ A pretty simple URL shortener written in Golang
     # Will build the Golang app for the first time and pull all dependent modules
     make build
 
-## Assumptions
+## Envir
 
   - Using a PostgreSQL database as a datastore (Install Postgres locally)
-  - The ENVs in this are just used as an example, real world you'd probably use a vault or store them only on the deployed environment
+  
+## Options
+
+  - By default, we'll generate shortened urls with 10 random characters. This can be modified by setting `URL_SLUG_LENGTH` to a different number. With 10 characters, there are 327,234,915,316,109,000 [permutations](https://stattrek.com/online-calculator/combinations-permutations.aspx)
+  
+## Deploying
+
+  - The `.env` file in stored in this repo is just used for local development. On your deployed application, you should use environment variables
+  - When deploying, your destination server will need to have a `DATABASE_URL` environment variable. You can then run `make migrate-deployed` to invoke the up migrations on that `DATABASE_URL`.
 
 ## Commands
 
