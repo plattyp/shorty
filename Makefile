@@ -11,22 +11,27 @@ build:
 
 install:
 	createdb shorty
-	sql-migrate up
+	./bin/migrate up
 
 run:
 	make build
 	bin/shorty
 
 migrate:
-	sql-migrate up
+	./bin/migrate up
+
+migrate-deployed:
+	./bin/migrate up --env deployed
 
 init-test:
 	dropdb shorty-test --if-exists
 	createdb shorty-test
-	sql-migrate up --env test
+	./bin/migrate up --env test
 
 init-test-travis:
-	sql-migrate up --env travis
+	dropdb shorty-test --if-exists
+	createdb shorty-test
+	./bin/migrate up --env test
 
 test:
 	go test

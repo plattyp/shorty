@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"shorty/accessors"
@@ -28,7 +29,7 @@ type ShortenedURLResponse struct {
 // ErrUnableToGenerateUniqueSlug used to explain that it was unable to generate a unique slug
 var ErrUnableToGenerateUniqueSlug = errors.New("Unable to generate a unique slug")
 
-const slugGeneratedLength = 20
+const slugGeneratedLength = getSlugLength()
 
 // NewShortenedURL is for creating a new shortened URL
 func (e *Endpointer) NewShortenedURL(c *gin.Context) {
@@ -106,4 +107,15 @@ func RandomGeneratedSlug(n int) string {
 
 func constructShortURL(slug string) string {
 	return fmt.Sprintf("%s/%s", os.Getenv("SHORTY_HOST"), slug)
+}
+
+func getSlugLength() int {
+	slugLength := os.Getenv("URL_SLUG_LENGTH")
+	if slugLength != "" {
+		slugNum, err := strconv.Atoi(slugLength)
+		if err == nil {
+			return slugNum
+		}
+	}
+	return 10
 }

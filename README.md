@@ -26,9 +26,13 @@ A pretty simple URL shortener written in Golang
 
     make install
 
-### If you add migrations, to execute them on your target DB
+### If you need to run migrations, to execute them on your local DB
 
     make migrate
+
+### If you need to run migrations on your deployed server, this will run them against the DATABASE_URL environment variable
+
+    make migrate-deployed
 
 ### Building It
 
@@ -74,4 +78,3 @@ Sample Response:
 ### GET /:slug
 
 Used for redirecting the shortened URL slug into the original destination URL.
-
