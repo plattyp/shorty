@@ -76,5 +76,5 @@ func enableDatabaseLogging() bool {
 }
 
 func isLiveEnvironment() bool {
-	return os.Getenv("SHORT_ENV") == "production"
+	return os.Getenv("SHORTY_ENV") == "production"
 }
