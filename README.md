@@ -14,10 +14,6 @@ A pretty simple URL shortener written in Golang
 
     # Will build the Golang app for the first time and pull all dependent modules
     make build
-
-## Envir
-
-  - Using a PostgreSQL database as a datastore (Install Postgres locally)
   
 ## Options
 
