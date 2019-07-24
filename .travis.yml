@@ -17,7 +17,7 @@ env:
   - PGPORT=5433
   - GO111MODULE=on
   - TRAVIS=1
-  - DATABASE_URL=postgres://localhost:5433/travis
+  - DATABASE_URL=postgres://localhost:5433/shorty-test
 install:
   - make build
 branches:
